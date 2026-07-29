@@ -5,6 +5,10 @@ description: Registering the stdio MCP server in Claude Code and Claude Desktop,
 tags: [claude, claude-code, claude-desktop, mcp]
 status: stable
 generated: { by: claude-code/claude-fable-5, at: 2026-07-29T18:30:00Z }
+sources:
+  - id: live-server
+    resource: https://mcp-prioritization.netlify.app/mcp
+    title: Deployed MCP server (Netlify)
 ---
 
 # Claude (Code, Desktop, Cowork)
@@ -22,6 +26,28 @@ Where the UI is not rendered, the tool returns only the fallback text
 `Use MCP apps integration to rearrange elements`. For the interactive view
 inside VS Code, use the *native* chat instead — see
 [VS Code](/docs/vscode.md).
+
+## Claude connectors (HTTP-hosted server)
+
+The deployed server[^live-server] at
+`https://mcp-prioritization.netlify.app/mcp` (see
+[Netlify](/docs/netlify.md)) can be added straight from the Claude UI:
+
+1. **Customize → Connectors → Add → Add custom connector**
+2. Under **Remote MCP server URL** enter:
+   `https://mcp-prioritization.netlify.app/mcp`
+
+![Usage of the HTTP version of the MCP app: the human_prioritization tool renders a drag-and-drop list in the Claude chat](./claude/http-mcp-app.gif)
+
+Example queries to force the MCP tool to be picked up:
+
+```
+List top 10 biggest cities in Lithuania
+Let me prioritize cities to visit
+```
+
+> **Model requirement:** at least a **Sonnet**-tier model — in testing,
+> Haiku did not call the tool.
 
 ## Claude Code
 
@@ -72,3 +98,5 @@ inline.
 > **stdio rule:** the stdio entry point must never write to stdout except
 > JSON-RPC — stdout carries the protocol framing. All logs go to stderr
 > (`console.error`).
+
+[^live-server]: Deployed MCP server (Netlify)

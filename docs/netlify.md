@@ -2,6 +2,7 @@
 type: Integration Guide
 title: Netlify deployment
 description: The HTTP transport at /mcp, first-time Netlify project creation, and the GitHub Actions deploy pipeline.
+resource: https://mcp-prioritization.netlify.app/mcp
 tags: [netlify, github-actions, mcp]
 status: stable
 generated: { by: claude-code/claude-fable-5, at: 2026-07-29T18:30:00Z }
@@ -13,7 +14,9 @@ generated: { by: claude-code/claude-fable-5, at: 2026-07-29T18:30:00Z }
 Function v2 (`default export` + `export const config = { path: '/mcp' }`).
 After `netlify deploy`, the MCP endpoint is `https://<site>.netlify.app/mcp`
 (Streamable HTTP; stateless legacy 2025-era clients are also served by
-default).
+default). The live deployment of this project is
+<https://mcp-prioritization.netlify.app/mcp> — see
+[Claude](/docs/claude.md) for adding it as a Claude connector.
 
 ## First-time project creation (upload approach)
 
