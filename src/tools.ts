@@ -5,6 +5,25 @@ import { PRIORITIZATION_HTML } from './ui.js';
 const UI_RESOURCE_URI = 'ui://prioritization/list.html';
 const UI_MIME_TYPE = 'text/html;profile=mcp-app';
 
+/**
+ * MCP Apps view metadata. Hosts read this from BOTH the resource listing and
+ * the `resources/read` contents entry — ChatGPT reads the contents entry, so
+ * it must be repeated there or the widget shows "Widget CSP is not set".
+ * The view is fully self-contained (inline CSS/JS, no external requests), so
+ * every CSP allowlist is empty.
+ */
+const UI_META = {
+  ui: {
+    prefersBorder: true,
+    domain: 'https://mcp-prioritization.netlify.app',
+    csp: {
+      connectDomains: [],
+      resourceDomains: [],
+      frameDomains: [],
+    },
+  },
+} as const;
+
 export function buildServer(): McpServer {
   const server = new McpServer(
     { name: 'prioritization-server', version: '0.0.1' },
@@ -18,17 +37,7 @@ export function buildServer(): McpServer {
       title: 'Human prioritization UI',
       description: 'Drag-and-drop ordered list for reordering items by priority.',
       mimeType: UI_MIME_TYPE,
-      _meta: {
-        ui: {
-          prefersBorder: true,
-          // The view is fully self-contained (inline CSS/JS, no external
-          // requests), so the declared CSP is "contact nothing".
-          csp: {
-            connectDomains: [],
-            resourceDomains: [],
-          },
-        },
-      },
+      _meta: UI_META,
     },
     async (uri) => ({
       contents: [
@@ -36,6 +45,7 @@ export function buildServer(): McpServer {
           uri: uri.href,
           mimeType: UI_MIME_TYPE,
           text: PRIORITIZATION_HTML,
+          _meta: UI_META,
         },
       ],
     }),

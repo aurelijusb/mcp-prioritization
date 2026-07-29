@@ -12,6 +12,9 @@ sources:
   - id: mcp-apps-spec
     resource: https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx
     title: MCP Apps specification (2026-01-26)
+  - id: openai-custom-ux
+    resource: https://developers.openai.com/apps-sdk/build/custom-ux
+    title: OpenAI Apps SDK — custom UX (widget CSP and domain)
 ---
 
 # ChatGPT
@@ -28,7 +31,17 @@ ChatGPT renders MCP Apps, so the drag-and-drop widget works there too.
 
 After connecting, the plugin page lists the template
 `ui://prioritization/list.html` and the `human_prioritization` tool.
-Example queries to force the tool to be picked up:
+
+## Forcing the tool to be called
+
+Type **`@`** followed by the plugin name (`@Prioritize`) to invoke the
+plugin explicitly instead of hoping the model picks it up:
+
+```
+@Prioritize Let me prioritize cities to visit
+```
+
+Without the `@` shortcut, phrasing that implies ranking usually works:
 
 ```
 List top 10 biggest cities in Lithuania
@@ -45,20 +58,29 @@ On the plugin's template page ChatGPT shows:
 > for app submission.
 
 These are **submission requirements, not connection errors** — the widget
-works fine in development (*Review status: development*). They map to the
-optional `_meta.ui` fields on the UI resource in the MCP Apps
-spec:[^mcp-apps-spec]
+works in development regardless (*Review status: development*). They map to
+`_meta.ui` fields on the UI resource:[^mcp-apps-spec][^openai-custom-ux]
 
-- `csp` — declares which external origins the widget's iframe may contact
-  (`connectDomains`, `resourceDomains`, ...). This view is fully
-  self-contained (inline CSS/JS, no external requests), so the correct
-  declaration would be empty domain lists.
-- `domain` — a unique origin the host uses to sandbox the widget for
-  published apps.
+- `csp` — which external origins the widget's iframe may contact
+  (`connectDomains`, `resourceDomains`, `frameDomains`). This view is fully
+  self-contained (inline CSS/JS, no external requests), so every list is
+  empty. Keep allowlists as narrow as possible: plugin review checks the
+  declared policy against actual UI behaviour.
+- `domain` — the widget's primary origin, used for sandboxing.
 
-Setting them would go in the resource registration in `src/tools.ts`
-(see [Architecture](/docs/architecture.md)); they only become mandatory if
-the app is submitted to the ChatGPT app directory.
+Both are set in `src/tools.ts` (see
+[Architecture](/docs/architecture.md)).
+
+> ⚠️ **The metadata must be on the `resources/read` contents entry**, not
+> only on the resource registration. The registration `_meta` surfaces in
+> `resources/list`, but ChatGPT reads the CSP from the contents entry
+> returned by `resources/read` — declaring it in just one place leaves the
+> "Widget CSP is not set" warning in place. This project defines a single
+> `UI_META` constant and passes it to both.
+
+After redeploying, press **Refresh** on the plugin's *Information* panel so
+ChatGPT re-reads the template metadata.
 
 [^live-server]: Deployed MCP server (Netlify)
 [^mcp-apps-spec]: MCP Apps specification (2026-01-26)
+[^openai-custom-ux]: OpenAI Apps SDK — custom UX (widget CSP and domain)
