@@ -17,6 +17,7 @@ working on:
 - [docs/claude.md](docs/claude.md) — Claude Code / Desktop / Cowork
   integration and MCP Apps support matrix
 - [docs/vscode.md](docs/vscode.md) — VS Code native chat integration
+- [docs/chatgpt.md](docs/chatgpt.md) — ChatGPT plugin integration
 - [docs/netlify.md](docs/netlify.md) — deployment and GitHub Actions
 
 ## Commands

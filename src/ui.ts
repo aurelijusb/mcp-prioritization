@@ -175,7 +175,7 @@ export const PRIORITIZATION_HTML = `<!doctype html>
   request('ui/initialize', {
     protocolVersion: '2026-01-26',
     capabilities: {},
-    clientInfo: { name: 'prioritization-view', version: '1.1.0' },
+    clientInfo: { name: 'prioritization-view', version: '0.0.1' },
     appCapabilities: { availableDisplayModes: ['inline', 'fullscreen'] }
   }, function (result) {
     var ctx = (result && result.hostContext) || {};

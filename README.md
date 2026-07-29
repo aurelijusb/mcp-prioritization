@@ -52,5 +52,6 @@ Full documentation lives in [docs/index.md](docs/index.md)
 - [Claude](docs/claude.md) — Claude Code / Desktop / Cowork setup and MCP
   Apps support matrix
 - [VS Code](docs/vscode.md) — seeing the widget in VS Code's native chat
+- [ChatGPT](docs/chatgpt.md) — adding the deployed server as a ChatGPT plugin
 - [Netlify](docs/netlify.md) — `/mcp` endpoint, first-time project creation,
   GitHub Actions

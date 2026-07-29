@@ -12,5 +12,7 @@ interactive MCP Apps drag-and-drop view.
   and Claude Cowork; which of them render the MCP Apps UI.
 - [VS Code](./vscode.md) — testing the interactive widget in VS Code's
   native chat (`.vscode/mcp.json`).
+- [ChatGPT](./chatgpt.md) — adding the HTTP-hosted server as a ChatGPT
+  plugin, and the Widget CSP / domain submission warnings.
 - [Netlify](./netlify.md) — HTTP transport at `/mcp`, first-time project
   creation, and the GitHub Actions deploy pipeline.

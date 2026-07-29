@@ -7,7 +7,7 @@ const UI_MIME_TYPE = 'text/html;profile=mcp-app';
 
 export function buildServer(): McpServer {
   const server = new McpServer(
-    { name: 'prioritization-server', version: '1.0.0' },
+    { name: 'prioritization-server', version: '0.0.1' },
     { capabilities: { tools: {}, resources: {} } },
   );
 
@@ -21,6 +21,12 @@ export function buildServer(): McpServer {
       _meta: {
         ui: {
           prefersBorder: true,
+          // The view is fully self-contained (inline CSS/JS, no external
+          // requests), so the declared CSP is "contact nothing".
+          csp: {
+            connectDomains: [],
+            resourceDomains: [],
+          },
         },
       },
     },
