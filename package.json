@@ -1,0 +1,19 @@
+{
+  "name": "mcp-prioritization",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "stdio": "tsx src/stdio.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^4.0.0",
+    "@types/node": "^26.1.2",
+    "tsx": "^4.19.0",
+    "typescript": "^7.0.2"
+  }
+}
