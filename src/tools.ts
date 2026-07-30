@@ -82,7 +82,7 @@ export function buildServer(): McpServer {
     async ({ items }) => ({
       // Fallback for hosts without MCP Apps support; hosts with support
       // render the ui:// resource and the human replies via the view.
-      content: [{ type: 'text', text: 'Use MCP apps integration to rearrange elements' }],
+      content: [{ type: 'text', text: WIDGET_DOMAIN ? 'Prioritized' : 'Prioritize locally' }],
       structuredContent: { items },
     }),
   );
