@@ -121,6 +121,7 @@ export const PRIORITIZATION_HTML = `<!doctype html>
 (function () {
   'use strict';
   var items = [];
+  var isHttp = true; // overwritten by tool-result; HTTP is the common case
   var nextId = 1;
   var pending = {}; // request id -> callback for the response
   var displayMode = 'inline';
@@ -157,6 +158,7 @@ export const PRIORITIZATION_HTML = `<!doctype html>
       if (Array.isArray(args.items)) setItems(args.items);
     } else if (msg.method === 'ui/notifications/tool-result') {
       var sc = msg.params && msg.params.structuredContent;
+      if (sc && typeof sc.isHttp === 'boolean') isHttp = sc.isHttp;
       if (sc && Array.isArray(sc.items) && items.length === 0) setItems(sc.items);
     }
   });
@@ -301,7 +303,7 @@ export const PRIORITIZATION_HTML = `<!doctype html>
     // content MUST be an array of content blocks (ContentBlock[]).
     request('ui/message', {
       role: 'user',
-      content: [{ type: 'text', text: 'Prioritized:\\n' + markdown }]
+      content: [{ type: 'text', text: (isHttp ? 'Prioritized' : 'Prioritize locally') + ':\\n' + markdown }]
     }, function (result, error) {
       sendButton.disabled = false;
       if (error) {

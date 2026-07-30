@@ -77,6 +77,7 @@ export function buildServer(): McpServer {
       }),
       outputSchema: z.object({
         items: z.array(z.string()).describe('Items in their current order'),
+        isHttp: z.boolean().describe('Whether this call ran over the HTTP transport (vs. stdio)'),
       }),
       _meta: {
         ui: {
@@ -87,9 +88,10 @@ export function buildServer(): McpServer {
     },
     async ({ items }) => ({
       // Fallback for hosts without MCP Apps support; hosts with support
-      // render the ui:// resource and the human replies via the view.
+      // render the ui:// resource, which reads `isHttp` off structuredContent
+      // to word its "send to chat" message instead (see src/ui.ts).
       content: [{ type: 'text', text: IS_HTTP ? 'Prioritized' : 'Prioritize locally' }],
-      structuredContent: { items },
+      structuredContent: { items, isHttp: IS_HTTP },
     }),
   );
 
