@@ -57,19 +57,21 @@ On the plugin's template page ChatGPT shows:
 > Widget domain is not set for this template. A unique domain is required
 > for app submission.
 
-These are **submission requirements, not connection errors** — the widget
-works in development regardless (*Review status: development*). They map to
-`_meta.ui` fields on the UI resource:[^mcp-apps-spec][^openai-custom-ux]
+The CSP warning is a **submission requirement, not a connection error** — the
+widget works in development regardless (*Review status: development*). It
+maps to `_meta.ui.csp` on the UI resource:[^mcp-apps-spec][^openai-custom-ux]
+which external origins the widget's iframe may contact (`connectDomains`,
+`resourceDomains`, `frameDomains`). This view is fully self-contained (inline
+CSS/JS, no external requests), so every list is empty. Keep allowlists as
+narrow as possible: plugin review checks the declared policy against actual
+UI behaviour. Set in `src/tools.ts` (see [Architecture](/docs/architecture.md)).
 
-- `csp` — which external origins the widget's iframe may contact
-  (`connectDomains`, `resourceDomains`, `frameDomains`). This view is fully
-  self-contained (inline CSS/JS, no external requests), so every list is
-  empty. Keep allowlists as narrow as possible: plugin review checks the
-  declared policy against actual UI behaviour.
-- `domain` — the widget's primary origin, used for sandboxing.
-
-Both are set in `src/tools.ts` (see
-[Architecture](/docs/architecture.md)).
+The domain warning is left unresolved on purpose: `ui.domain` is where
+ChatGPT expects the widget's primary origin, but Claude's connector platform
+assigns its own sandbox origin (`{hash}.claudemcpcontent.com`) and hard-fails
+the connection ("Invalid ui.domain format") if the server declares any other
+value. Since Claude is a hard error and ChatGPT's is a soft dev-mode warning,
+`domain` is deliberately omitted from `UI_META`.
 
 > ⚠️ **The metadata must be on the `resources/read` contents entry**, not
 > only on the resource registration. The registration `_meta` surfaces in
