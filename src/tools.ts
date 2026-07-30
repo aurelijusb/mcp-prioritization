@@ -6,6 +6,13 @@ const UI_RESOURCE_URI = 'ui://prioritization/list.html';
 const UI_MIME_TYPE = 'text/html;profile=mcp-app';
 
 /**
+ * Netlify injects DEPLOY_PRIME_URL/URL at runtime for every deploy (production
+ * and previews alike) — unset for stdio, where `ui.domain` doesn't apply.
+ * See https://docs.netlify.com/build/configure-builds/environment-variables/.
+ */
+const WIDGET_DOMAIN = process.env.DEPLOY_PRIME_URL ?? process.env.URL;
+
+/**
  * MCP Apps view metadata. Hosts read this from BOTH the resource listing and
  * the `resources/read` contents entry — ChatGPT reads the contents entry, so
  * it must be repeated there or the widget shows "Widget CSP is not set".
@@ -15,14 +22,14 @@ const UI_MIME_TYPE = 'text/html;profile=mcp-app';
 const UI_META = {
   ui: {
     prefersBorder: true,
-    domain: 'https://mcp-prioritization.netlify.app',
+    ...(WIDGET_DOMAIN ? { domain: WIDGET_DOMAIN } : {}),
     csp: {
       connectDomains: [],
       resourceDomains: [],
       frameDomains: [],
     },
   },
-} as const;
+};
 
 export function buildServer(): McpServer {
   const server = new McpServer(
